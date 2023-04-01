@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.cadernodecontas</groupId>
-	<artifactId>CadernoDeContas</artifactId>
+	<artifactId>caderno-de-contas</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>CadernoDeContas</name>
+	<name>caderno-de-contas</name>
 	<description>Software para controlar suas contas</description>
 	<properties>
 		<java.version>19</java.version>
@@ -41,6 +41,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.32</version>
 		</dependency>
 	</dependencies>
 
@@ -84,6 +89,10 @@
 				<enabled>false</enabled>
 			</releases>
 		</repository>
+		<repository>
+			<id>spring-releases</id>
+			<url>https://repo.spring.io/libs-release</url>
+		</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
@@ -101,6 +110,10 @@
 			<releases>
 				<enabled>false</enabled>
 			</releases>
+		</pluginRepository>
+		<pluginRepository>
+			<id>spring-releases</id>
+			<url>https://repo.spring.io/libs-release</url>
 		</pluginRepository>
 	</pluginRepositories>
 
