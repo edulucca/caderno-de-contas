@@ -3,6 +3,7 @@ Projeto referente a matéria Integração Contínua e DevOps da Pós-Graduação
 
 ## Tecnologias utilizadas
 - Spring Boot 
+- Spring Data JPA
 - Docker
   * MySQL
 - Lombok
