@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DividaMesRepository extends JpaRepository<DividaMesEntity, Integer> {
+
+
 }
