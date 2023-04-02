@@ -34,6 +34,6 @@ public class DividaEntity {
     private TipoDividaEnum tipoDividaEnum;
 
     @ManyToOne(targetEntity = DividaMesEntity.class)
-    @JoinColumn(name = "dividaMes_id")
+    @JoinColumn(name = "dividaMes_id", nullable = false)
     private DividaMesEntity dividaMesEntity;
 }

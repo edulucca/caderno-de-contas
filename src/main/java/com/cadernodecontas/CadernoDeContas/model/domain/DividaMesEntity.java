@@ -20,7 +20,7 @@ public class DividaMesEntity {
 
     private int numMes;
 
-    @OneToMany(mappedBy = "dividaMesEntity", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "dividaMesEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<DividaEntity> dividaEntityList;
 
     public double calculoTotal() {
