@@ -11,7 +11,8 @@ public class DividaService {
     @Autowired
     private DividaRepository dividaRepository;
 
-    public void incluir(DividaEntity divida) {
+    public DividaEntity incluir(DividaEntity divida) {
         dividaRepository.save(divida);
+        return null;
     }
 }
