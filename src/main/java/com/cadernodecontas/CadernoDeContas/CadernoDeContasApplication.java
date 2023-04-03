@@ -8,8 +8,8 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan
 public class CadernoDeContasApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CadernoDeContasApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(CadernoDeContasApplication.class, args);
+    }
 
 }
