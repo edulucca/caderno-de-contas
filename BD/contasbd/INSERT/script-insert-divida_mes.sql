@@ -1,0 +1,1 @@
+INSERT INTO divida_mes (num_mes) values (1);

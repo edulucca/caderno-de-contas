@@ -1,5 +1,6 @@
 package com.cadernodecontas.CadernoDeContas.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,6 +22,7 @@ public class DividaMesEntity {
     private int numMes;
 
     @OneToMany(mappedBy = "dividaMesEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<DividaEntity> dividaEntityList;
 
     public double calculoTotal() {

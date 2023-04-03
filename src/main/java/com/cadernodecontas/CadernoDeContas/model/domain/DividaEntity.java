@@ -1,6 +1,7 @@
 package com.cadernodecontas.CadernoDeContas.model.domain;
 
 import com.cadernodecontas.CadernoDeContas.model.domain.enums.TipoDividaEnum;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -30,7 +31,7 @@ public class DividaEntity {
     private double valor;
 
     private String nome;
-    private String desc;
+    private String descricao;
 
     // @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Temporal(TemporalType.DATE)
@@ -47,6 +48,7 @@ public class DividaEntity {
     private TipoDividaEnum tipoDividaEnum;
 
     @ManyToOne(targetEntity = DividaMesEntity.class)
-    @JoinColumn(name = "dividaMes_id", nullable = false)
+    @JoinColumn(name = "dividaMes_id")
+    @JsonBackReference
     private DividaMesEntity dividaMesEntity;
 }

@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/divida")
@@ -23,18 +23,29 @@ public class DividaController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DividaEntity> cadastrarDivida(@RequestBody DividaEntity dividaEntity) {
-       // try{
+       try{
             DividaEntity divida = dividaService.cadastrar(dividaEntity);
             return new ResponseEntity<>(divida, HttpStatus.CREATED);
-       /* } catch (Exception e) {
+       } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }*/
+        }
     }
 
-    //TODO fazer após CRUD
-   /* @GetMapping(value = "/")
-    public ResponseEntity<String> getAll(){
-        return new ResponseEntity<>("Hello World", HttpStatus.OK);
-    } */
+   @GetMapping(value = "/")
+    public ResponseEntity<List<DividaEntity>> getAllDivida(){
+       List<DividaEntity> dividaEntities = new ArrayList<DividaEntity>();
+       try {
+            dividaService.findAll().forEach(dividaEntities::add);
+
+            if(dividaEntities.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
+       return new ResponseEntity<>(dividaEntities, HttpStatus.OK);
+       } catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+       }
+
+    }
 }
 

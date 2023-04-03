@@ -1,0 +1,16 @@
+POST /api/divida/cadastrar HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+Content-Length: 204
+
+{
+  "valor":150.0,
+  "nome":"Wifi",
+  "descricao":"conta de internet",
+  "dataFinal":"2025-12-01",
+  "dataDePgto":"2023-04-17",
+  "tipoDividaEnum":"FIXA",
+  "dividaMesEntity":{
+    "id": 1
+  }
+}
