@@ -1,0 +1,1 @@
+create table divida_mes (id integer not null auto_increment, num_mes integer, primary key (id)) engine=InnoDB;

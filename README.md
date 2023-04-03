@@ -7,3 +7,6 @@ Projeto referente a matéria Integração Contínua e DevOps da Pós-Graduação
 - Docker
   * MySQL
 - Lombok
+
+### Alunos
+Eduardo de Lucca e Bruna Almeida

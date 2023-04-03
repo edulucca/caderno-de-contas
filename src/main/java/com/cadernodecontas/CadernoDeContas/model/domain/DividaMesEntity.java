@@ -19,6 +19,7 @@ public class DividaMesEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "num_mes")
     private int numMes;
 
     @OneToMany(mappedBy = "dividaMesEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

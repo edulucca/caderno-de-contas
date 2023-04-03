@@ -1,0 +1,2 @@
+DELETE /api/divida/deletar-todas-as-dividas HTTP/1.1
+Host: localhost:8080
