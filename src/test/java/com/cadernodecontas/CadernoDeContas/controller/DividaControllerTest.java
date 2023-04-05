@@ -5,7 +5,6 @@ import com.cadernodecontas.CadernoDeContas.model.domain.DividaMesEntity;
 import com.cadernodecontas.CadernoDeContas.model.domain.enums.TipoDividaEnum;
 import com.cadernodecontas.CadernoDeContas.model.repository.DividaRepository;
 import com.cadernodecontas.CadernoDeContas.model.service.DividaService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,9 +20,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.Optional;
-
+import java.util.*;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -47,6 +44,7 @@ class DividaControllerTest {
     private ObjectMapper objectMapper;
 
     DividaEntity divida;
+    DividaEntity divida2;
     Integer id = 1;
 
     @BeforeEach
@@ -73,29 +71,43 @@ class DividaControllerTest {
         divida.setTipoDividaEnum(TipoDividaEnum.FIXA);
         divida.setDividaMesEntity(dividaMes);
 
+        divida2 = new DividaEntity();
+        divida2.setId(1);
+        divida2.setValor(100.0);
+        divida2.setNome("TV");
+        divida2.setDescricao("Conta de canais a cabo");
+        divida2.setDataFinal(Date.from(dataFinal));
+        divida2.setDataDePgto(Date.from(dataPgmt));
+        divida2.setTipoDividaEnum(TipoDividaEnum.FIXA);
+        divida2.setDividaMesEntity(dividaMes);
+
     }
 
 
     @Test
     void cadastrarDividaTest() throws Exception {
         mockMvc.perform(post("/api/divida/cadastrar")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(divida)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(divida)))
                 .andExpect(status().isCreated())
                 .andDo(print());
     }
 
     @Test
-    void getAllDividasTest() {
+    void getAllDividasTest() throws Exception {
+        List<DividaEntity> dividas = new ArrayList<DividaEntity>(Arrays.asList(divida, divida2));
+
+        when(dividaService.findAll()).thenReturn(dividas);
+        mockMvc.perform(get("/api/divida/"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(dividas.size()))
+                .andDo(print());
     }
 
     //TODO terminar implementacao
     @Test
     void findDividaByIdTest() throws Exception {
         when(dividaService.findDividaByid(id)).thenReturn(Optional.of(divida));
-
-
-
 
         mockMvc.perform(get("/api/divida/{id}/buscar", id))
                 .andExpect(status().isOk())
@@ -112,12 +124,12 @@ class DividaControllerTest {
     }
 
     //TODO
-   @Test
+    @Test
     void findDividaByIdDeveriaRetornarNoContentTest() throws Exception {
-       when(dividaService.findDividaByid(id)).thenReturn(Optional.of(divida));
+        when(dividaService.findDividaByid(id)).thenReturn(Optional.empty());
         //when(dividaService.findDividaByid(divida.getId())).thenReturn(Optional.empty());
 
-        mockMvc.perform(get("/api/divida/{id}/buscar", divida.getId()))
+        mockMvc.perform(get("/api/divida/{id}/buscar", id))
                 .andExpect(status().isNoContent())
                 .andDo(print());
     }
@@ -141,6 +153,7 @@ class DividaControllerTest {
                 .andDo(print());
     }
 
+    //TODO
     @Test
     void updateDividaByIdTest() throws Exception {
         DividaMesEntity dividaMesAtualizada = new DividaMesEntity();
