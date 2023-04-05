@@ -7,6 +7,7 @@ import com.cadernodecontas.CadernoDeContas.model.repository.DividaRepository;
 import com.cadernodecontas.CadernoDeContas.model.service.DividaService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Optional;
+
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -47,16 +54,25 @@ class DividaControllerTest {
         DividaMesEntity dividaMes = new DividaMesEntity();
         dividaMes.setId(1);
         dividaMes.setNumMes(1);
+        Instant dataFinal = LocalDate.of(2025, Month.DECEMBER, 01)
+                .atStartOfDay(ZoneId.systemDefault())
+                .toInstant();
 
+        Instant dataPgmt = LocalDate.of(2023, Month.APRIL, 17)
+                .atStartOfDay(ZoneId.systemDefault())
+                .toInstant();
+
+        System.out.println(dataFinal);
         divida = new DividaEntity();
         divida.setId(1);
         divida.setValor(150.0);
         divida.setNome("Wifi");
         divida.setDescricao("Conta de internet");
-        divida.setDataFinal(new Date(2025, 12, 01));
-        divida.setDataDePgto(new Date(2023, 04, 17));
+        divida.setDataFinal(Date.from(dataFinal));
+        divida.setDataDePgto(Date.from(dataPgmt));
         divida.setTipoDividaEnum(TipoDividaEnum.FIXA);
         divida.setDividaMesEntity(dividaMes);
+
     }
 
 
@@ -78,17 +94,21 @@ class DividaControllerTest {
     void findDividaByIdTest() throws Exception {
         when(dividaService.findDividaByid(id)).thenReturn(Optional.of(divida));
 
+
+
+
         mockMvc.perform(get("/api/divida/{id}/buscar", id))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(divida.getId()))
                 .andExpect(jsonPath("$.valor").value(divida.getValor()))
                 .andExpect(jsonPath("$.nome").value(divida.getNome()))
                 .andExpect(jsonPath("$.descricao").value(divida.getDescricao()))
-                /*.andExpect(jsonPath("$.dataFinal").value("2025-12-01"))
-                .andExpect(jsonPath("$[0].dataDePgto").value("2023-04-17"))
-                .andExpect(jsonPath("$.tipoDividaEnum").value(divida.getTipoDividaEnum()))
+                .andExpect(jsonPath("$.dataFinal", Matchers.is(new SimpleDateFormat("yyyy-MM-dd").format(divida.getDataFinal()))))
+                .andExpect(jsonPath("$.dataDePgto", Matchers.is(new SimpleDateFormat("yyyy-MM-dd").format(divida.getDataDePgto()))))
+                /*.andExpect(jsonPath("$.tipoDividaEnum").value(divida.getTipoDividaEnum()))
                 .andExpect(jsonPath("$.dividaMesEntity").value(divida.getDividaMesEntity())*/
                 .andDo(print());
+
     }
 
     //TODO
