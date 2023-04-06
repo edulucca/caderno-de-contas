@@ -60,11 +60,10 @@ class DividaControllerTest {
                 .atStartOfDay(ZoneId.systemDefault())
                 .toInstant();
 
-        System.out.println(dataFinal);
         divida = new DividaEntity();
         divida.setId(1);
         divida.setValor(150.0);
-        divida.setNome("Wifi");
+        divida.setNome(null);
         divida.setDescricao("Conta de internet");
         divida.setDataFinal(Date.from(dataFinal));
         divida.setDataDePgto(Date.from(dataPgmt));
@@ -74,7 +73,7 @@ class DividaControllerTest {
         divida2 = new DividaEntity();
         divida2.setId(1);
         divida2.setValor(100.0);
-        divida2.setNome("TV");
+        divida2.setNome(null);
         divida2.setDescricao("Conta de canais a cabo");
         divida2.setDataFinal(Date.from(dataFinal));
         divida2.setDataDePgto(Date.from(dataPgmt));
@@ -104,7 +103,6 @@ class DividaControllerTest {
                 .andDo(print());
     }
 
-    //TODO terminar implementacao
     @Test
     void findDividaByIdTest() throws Exception {
         when(dividaService.findDividaByid(id)).thenReturn(Optional.of(divida));
@@ -117,22 +115,11 @@ class DividaControllerTest {
                 .andExpect(jsonPath("$.descricao").value(divida.getDescricao()))
                 .andExpect(jsonPath("$.dataFinal", Matchers.is(new SimpleDateFormat("yyyy-MM-dd").format(divida.getDataFinal()))))
                 .andExpect(jsonPath("$.dataDePgto", Matchers.is(new SimpleDateFormat("yyyy-MM-dd").format(divida.getDataDePgto()))))
-                /*.andExpect(jsonPath("$.tipoDividaEnum").value(divida.getTipoDividaEnum()))
-                .andExpect(jsonPath("$.dividaMesEntity").value(divida.getDividaMesEntity())*/
                 .andDo(print());
 
+        System.out.println(jsonPath("$.dividaMesEntity"));
     }
 
-    //TODO
-    @Test
-    void findDividaByIdDeveriaRetornarNoContentTest() throws Exception {
-        when(dividaService.findDividaByid(id)).thenReturn(Optional.empty());
-        //when(dividaService.findDividaByid(divida.getId())).thenReturn(Optional.empty());
-
-        mockMvc.perform(get("/api/divida/{id}/buscar", id))
-                .andExpect(status().isNoContent())
-                .andDo(print());
-    }
 
     @Test
     void deleteAllDividasTest() throws Exception {
@@ -160,31 +147,38 @@ class DividaControllerTest {
         dividaMesAtualizada.setId(2);
         dividaMesAtualizada.setNumMes(2);
 
+        Instant dataFinal = LocalDate.of(2025, Month.NOVEMBER, 29)
+                .atStartOfDay(ZoneId.systemDefault())
+                .toInstant();
+
+        Instant dataPgmt = LocalDate.of(2023, Month.APRIL, 17)
+                .atStartOfDay(ZoneId.systemDefault())
+                .toInstant();
+
         DividaEntity dividaAtualizada = new DividaEntity();
         dividaAtualizada.setId(1);
         dividaAtualizada.setValor(160.0);
         dividaAtualizada.setNome("Wifi");
         dividaAtualizada.setDescricao("Conta de internet");
-        dividaAtualizada.setDataFinal(new Date(2025, 12, 01));
-        dividaAtualizada.setDataDePgto(new Date(2023, 04, 17));
+        dividaAtualizada.setDataFinal(Date.from(dataFinal));
+        dividaAtualizada.setDataDePgto(Date.from(dataPgmt));
         dividaAtualizada.setTipoDividaEnum(TipoDividaEnum.FIXA);
         dividaAtualizada.setDividaMesEntity(dividaMesAtualizada);
 
         when(dividaService.findDividaByid(id)).thenReturn(Optional.of(divida));
         when(dividaService.cadastrar(any(DividaEntity.class))).thenReturn(dividaAtualizada);
 
-        mockMvc.perform(put("/api/divida/{id}/atualizar", dividaAtualizada.getId()))
-                //.contentType(MediaType.APPLICATION_JSON)
-                //.content(objectMapper.writeValueAsString(dividaAtualizada))
+        mockMvc.perform(put("/api/divida/{id}/atualizar", dividaAtualizada.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dividaAtualizada)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(dividaAtualizada.getId()))
                 .andExpect(jsonPath("$.valor").value(dividaAtualizada.getValor()))
                 .andExpect(jsonPath("$.nome").value(dividaAtualizada.getNome()))
                 .andExpect(jsonPath("$.descricao").value(dividaAtualizada.getDescricao()))
-                /*.andExpect(jsonPath("$.dataFinal").value("2025-12-01"))
-                .andExpect(jsonPath("$[0].dataDePgto").value("2023-04-17"))
-                .andExpect(jsonPath("$.tipoDividaEnum").value(dividaAtualizada.getTipoDividaEnum()))
-                .andExpect(jsonPath("$.dividaMesEntity").value(dividaAtualizada.getDividaMesEntity())*/
+                .andExpect(jsonPath("$.dataFinal", Matchers.is(new SimpleDateFormat("yyyy-MM-dd").format(Date.from(dataFinal)))))
+                .andExpect(jsonPath("$.dataDePgto", Matchers.is(new SimpleDateFormat("yyyy-MM-dd").format(Date.from(dataPgmt)))))
+                .andExpect(jsonPath("$.tipoDividaEnum").value(dividaAtualizada.getTipoDividaEnum().toString()))
                 .andDo(print());
     }
 }
