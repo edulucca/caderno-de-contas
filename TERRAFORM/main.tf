@@ -1,8 +1,14 @@
 provider "aws" {
     version = "~> 2.0"
-    region = "us-east-1"
+    region = var.region
 }
 
-resource "aws_instance" "dev" {
-    ami = ""
+terraform {
+    required_version = "1.4.1"
+    required_providers {
+        aws = {
+            source  = "hashicorp/aws"
+            version = "4.16"
+        }
+    }
 }
