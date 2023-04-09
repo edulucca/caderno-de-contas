@@ -1,7 +1,10 @@
-resource "aws_instance" "EC2_Instance" {
+resource "aws_instance" "server" {
   instance_type = var.instanceType
   ami           = var.imageId
   tags = {
-    Name = "cezaodabahia.CriadaPeloTerraform"
+    Name        = var.name
+    Environment = var.env
+    Provisioner = "Terraform"
+    Repo        = var.repo
   }
 }

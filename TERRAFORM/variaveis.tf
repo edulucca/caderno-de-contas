@@ -15,3 +15,18 @@ variable "instanceType" {
   default     = "t2.micro"
   description = "Tipo de máquina EC2 que sera criada na AWS"
 }
+
+variable "name" {
+  description = "Name of the application"
+  default     = "server01"
+}
+
+variable "env" {
+  description = "Environment of the application"
+  default     = "prod"
+}
+
+variable "repo" {
+  description = "Repository of the application"
+  default     = "https://github.com/edulucca/caderno-de-contas"
+}
