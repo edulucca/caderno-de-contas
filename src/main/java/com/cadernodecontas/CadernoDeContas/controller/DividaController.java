@@ -2,6 +2,8 @@ package com.cadernodecontas.CadernoDeContas.controller;
 
 import com.cadernodecontas.CadernoDeContas.model.domain.DividaEntity;
 import com.cadernodecontas.CadernoDeContas.model.service.DividaService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,12 +21,17 @@ public class DividaController {
     @Autowired
     private DividaService dividaService;
 
+    private static final Logger LOG = LoggerFactory.getLogger(DividaController.class);
+
     @PostMapping(value = "/cadastrar",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DividaEntity> cadastrarDivida(@RequestBody DividaEntity dividaEntity) {
         try {
             DividaEntity divida = dividaService.cadastrar(dividaEntity);
+
+            LOG.info("Cadastrando Divida");
+
             return new ResponseEntity<>(divida, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -40,6 +47,8 @@ public class DividaController {
             if (dividaEntities.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
+
+            LOG.info("Buscando todas as dividas");
 
             return new ResponseEntity<>(dividaEntities, HttpStatus.OK);
         } catch (Exception e) {
@@ -57,6 +66,8 @@ public class DividaController {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
+            LOG.info("Buscando divida por id");
+
             return new ResponseEntity<>(dividaEncontrada, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -68,6 +79,9 @@ public class DividaController {
     public ResponseEntity<HttpStatus> deleteAllDividas() {
         try {
             dividaService.deleteAll();
+
+            LOG.info("Deletando todas as dividas");
+
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -79,6 +93,9 @@ public class DividaController {
         Optional<DividaEntity> dividaEncontrada = Optional.of(dividaService.findDividaByid(id).get());
         try {
             dividaService.deleteDividaById(dividaEncontrada.get().getId());
+
+            LOG.info("Deletando dividas por id");
+
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -97,6 +114,8 @@ public class DividaController {
             divida.setDataFinal(dividaEntity.getDataFinal());
             divida.setDataDePgto(dividaEntity.getDataDePgto());
             divida.setDividaMesEntity(dividaEntity.getDividaMesEntity());
+
+            LOG.info("Atualizando divida");
 
             return new ResponseEntity<>(dividaService.cadastrar(divida), HttpStatus.OK);
         } else {
