@@ -7,6 +7,7 @@ networks:
 volumes:
   prometheus_data:
   grafana_data:
+  db:
 
 services:
   prometheus:
@@ -24,3 +25,37 @@ services:
       - 3000:3000
     networks:
       - aw-network
+
+  mysqldb:
+    image: mysql:latest
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=contasdb
+    ports:
+      - 3306:3306
+    networks:
+      - aw-network
+    volumes:
+      - db:/var/lib/mysql
+  app:
+    depends_on:
+      - mysqldb
+    build: ./
+    restart: on-failure
+    ports:
+      - 8080:8080
+    networks:
+      - aw-network
+    environment:
+      SPRING_APPLICATION_JSON: '{
+          "spring.datasource.url"  : "jdbc:mysql://mysqldb:3306/contasdb",
+          "spring.datasource.username" : "root",
+          "spring.datasource.password" : "root",
+          "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQLDialect",
+          "spring.jpa.hibernate.ddl-auto" : "update"
+        }'
+    volumes:
+      - .m2:/root/.m2
+    stdin_open: true
+    tty: true
