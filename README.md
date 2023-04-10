@@ -37,7 +37,7 @@
 <img width="680" alt="Micrometer_screenshot" src="https://user-images.githubusercontent.com/60782550/230812505-2f152db4-ea55-4751-8ee0-36cdd1b90688.png">
  
 * Zipkin
- <img width="958" alt="Zipkin_screenshot" src="https://user-images.githubusercontent.com/60782550/230812362-f75bea32-1653-4bbd-a9f0-7487c47a14ea.png">
+<img width="958" alt="Zipkin_screenshot" src="https://user-images.githubusercontent.com/60782550/230812362-f75bea32-1653-4bbd-a9f0-7487c47a14ea.png">
  
 * Papertrail
 <img width="680" alt="Papertrail_screenshot" src="https://user-images.githubusercontent.com/60782550/230812553-b3215490-a3eb-4406-99be-01be21b2fbf8.png">
