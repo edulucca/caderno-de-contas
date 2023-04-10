@@ -12,6 +12,7 @@
 - Junit 5
 - Spring Boot Test
 - Spring Boot Actuator
+- Terraform
 - Docker
   * MySQL
   * API
