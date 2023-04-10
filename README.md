@@ -6,7 +6,7 @@
 
 > Tecnologias utilizadas
 - Java 19
-- Spring Boot 3.0.6
+- Spring Boot
 - Spring Data JPA
 - Lombok
 - Junit 5
